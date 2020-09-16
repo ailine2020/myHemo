@@ -22,7 +22,9 @@ app.use(morgan("dev"));
 app.use(
   session({
     secret: process.env.SESSION_SECRET,
-    cookie: { maxAge: 60000 }, // in millisec
+    cookie: {
+      maxAge: 60000
+    }, // in millisec
     store: new MongoStore({
       mongooseConnection: mongoose.connection,
       ttl: 24 * 60 * 60, // 1 day
@@ -37,5 +39,8 @@ app.get("/", (req, res) => res.send("hello :) my api is working"));
 app.use("/users", require("./routes/api.users"));
 app.use("/drugs", require("./routes/api.drugs"));
 app.use("/rappels", require("./routes/api.rappels"));
+app.use("/api/auth", require("./routes/api.auth"));
+app.use("/contact", require("./routes/api.contact"));
+
 
 module.exports = app;

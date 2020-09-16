@@ -1,5 +1,7 @@
 const router = new require("express").Router();
 const UserModel = require("./../models/User");
+const auth = require("./../auth");
+
 
 router.get("/", async (req, res, next) => {
   try {
@@ -59,7 +61,7 @@ router.delete("/:id",async(req,res,next)=>{
 });
 
 //PATCH mettre à jour un user
-router.patch("/:id", async(req,res,next)=>{
+router.patch("/:id", auth.authenticate, async(req,res,next)=>{
   try{
     const updateUser = await UserModel.findByIdAndUpdate(req.params.id,req.body, {new:true}); //pour récuperer le doc mis à jour
     res.json(updateUser);
