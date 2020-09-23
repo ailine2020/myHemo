@@ -2,32 +2,31 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const userSchema = new Schema({
-    name: String,
-    email: String,
-    password: String,
-    birthdate: Date,
+    name: {
+        type: String,
+        required: true,
+    },
+    email: {
+        type: String,
+        required: true,
+    },
+    password: {
+        type: String,
+        required: true,
+    },
     avatar: {
         type: String,
         default: "https://oasys.ch/wp-content/uploads/2019/03/photo-avatar-profil.png"
     },
     role: {
         type: String,
-        enum: ["admin", "user"]
+        enum: ["admin", "user"],
+        default: "user",
     },
-    type_user: {
-        type: String,
-        enum: ["parent", "patient"]
-    },
-    hemophilia_card: {
-        recto: {
-            type: String,
-            default: "https://urbandojo.com/wp-content/uploads/2017/04/default-image.jpg"
-        },
-        verso: {
-            type: String,
-            default: "https://urbandojo.com/wp-content/uploads/2017/04/default-image.jpg"
-        },
-    },
+    card: {
+        recto: String,
+        verso: String
+    }
 });
 
 const UserModel = mongoose.model("User", userSchema);

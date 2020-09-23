@@ -29,11 +29,14 @@ router.post("/signin", async (req, res, next) => {
     if (!userInfos.email || !userInfos.password) {
         //si pas renseignés => retourne mess erreur au client
         res.status(401).json({
-            msg: "Identifiants incorrects",
+            msg: "Identifiants incorrects 1",
             level: "error",
         });
     }
     //si mdp + mail renseignés : verif que mail et mdp correspondent en bdd
+
+console.log(userInfos);
+
     userModel
         .findOne({
             email: userInfos.email
@@ -42,16 +45,18 @@ router.post("/signin", async (req, res, next) => {
             if (!user) {
                 //si pas d'user trouvé pour ce mail => return erreur au client
                 return res.status(401).json({
-                    msg: "Identifiants incorrects",
+                    msg: "Identifiants incorrects  2",
                     level: "error",
                 });
             }
             //si user trouvé => compare mdp crypté stocké dans la bdd avec celui envoyé depuis le formulaire
+console.log("--->");
+            console.log(user);
             const checkPassword = bcrypt.compareSync(userInfos.password, user.password);
             // si mdp incorrect : 
             if (checkPassword === false) {
                 return res.status(401).json({
-                    msg: "Identifiants incorrects",
+                    msg: "Identifiants incorrects 3",
                     level: "error",
                 });
             }

@@ -11,7 +11,15 @@ router.get("/", async (req, res, next) => {
 });
 router.get("/:id", async (req, res, next) => {
     try {
-      const rappel = await RappelModel.findById(req.params.id);
+      const rappel = await RappelModel.findById(req.params.id).populate("author");
+      res.json(rappel);
+    } catch (err) {
+      next(err);
+    }
+  });
+router.get("/user/:id", async (req, res, next) => {
+    try {
+      const rappel = await RappelModel.find({author: req.params.id}).populate("author");
       res.json(rappel);
     } catch (err) {
       next(err);
@@ -33,7 +41,7 @@ router.post("/", async (req, res, next) => {
     try {
         const rappel = await RappelModel.create({
             author,
-            calendar,
+            calendar: Date.now(),
             periodicity,
             injection_,
             drugs,

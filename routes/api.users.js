@@ -1,6 +1,7 @@
 const router = new require("express").Router();
 const UserModel = require("./../models/User");
 const auth = require("./../auth");
+const bcrypt = require("bcrypt");
 
 
 router.get("/", async (req, res, next) => {
@@ -27,22 +28,16 @@ router.post("/", async (req, res, next) => {
     name,
     email,
     password,
-    brithdate,
     avatar,
     role,
-    type_user,
-    hemophilia_card,
   } = req.body;
   try {
     const user = await UserModel.create({
       name,
       email,
       password,
-      brithdate,
       avatar,
       role,
-      type_user,
-      hemophilia_card,
     });
     res.json(user)
   } catch (err) {
@@ -51,23 +46,31 @@ router.post("/", async (req, res, next) => {
 });
 
 // DELETE USER
-router.delete("/:id",async(req,res,next)=>{
-  try{
+router.delete("/:id", async (req, res, next) => {
+  try {
     const deleteUser = await UserModel.findOneAndDelete(req.params.id);
     res.json(deleteUser)
-  }catch (err){
+  } catch (err) {
     next(err);
   }
 });
 
 //PATCH mettre à jour un user
-router.patch("/:id", auth.authenticate, async(req,res,next)=>{
-  try{
-    const updateUser = await UserModel.findByIdAndUpdate(req.params.id,req.body, {new:true}); //pour récuperer le doc mis à jour
+router.patch("/:id", auth.authenticate, async (req, res, next) => {
+  var user = {
+    ...req.body
+  };
+  try {
+    const newPassword = await bcrypt.hash(user.password, 10);
+    user.password = newPassword;
+    const updateUser = await UserModel.findByIdAndUpdate(req.params.id, user, {
+      new: true
+    }); //pour récuperer le doc mis à jour
     res.json(updateUser);
-  }catch(err){
+  } catch (err) {
     next(err)
   }
+
 });
 
 module.exports = router;

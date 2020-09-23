@@ -13,7 +13,7 @@ const app = express();
 app.use(express.json());
 
 // CORS SETUP
-app.use(cors("*"));
+app.use(cors(["http://localhost:3000", "http://localhost:8080"])); // obligatoire pour accepter les appels ajax entrant
 
 // API CALL LOGGIN
 app.use(morgan("dev"));
@@ -34,12 +34,13 @@ app.use(
   })
 );
 
-app.get("/", (req, res) => res.send("hello :) my api is working"));
+//app.get("/", (req, res) => res.send("hello :) my api is working"));
 
 app.use("/users", require("./routes/api.users"));
 app.use("/drugs", require("./routes/api.drugs"));
 app.use("/rappels", require("./routes/api.rappels"));
 app.use("/api/auth", require("./routes/api.auth"));
+app.use("/card", require("./routes/api.card"));
 app.use("/contact", require("./routes/api.contact"));
 
 

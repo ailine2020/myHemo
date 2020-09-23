@@ -3,8 +3,14 @@ const Schema = mongoose.Schema;
 
 const drugSchema = new Schema({
   name: String,
-  date: Date,
-  // injection: Injection_id,
+  date: {
+    type: Date,
+    default: Date.now
+  },
+  injection:  {
+    type: Schema.Types.ObjectId,
+    ref: "Rappel"
+  },
   quantite: Number
 });
 
