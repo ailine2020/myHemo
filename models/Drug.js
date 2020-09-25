@@ -2,15 +2,16 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const drugSchema = new Schema({
+  author: {
+    type: Schema.Types.ObjectId,
+    ref: "User"
+  },
   name: String,
   date: {
     type: Date,
     default: Date.now
   },
-  injection:  {
-    type: Schema.Types.ObjectId,
-    ref: "Rappel"
-  },
+  // injection: Injection_id,
   quantite: Number
 });
 

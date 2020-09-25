@@ -14,6 +14,4 @@ router.patch("/user/:id", uploader.array("card"), async (req, res, next) => {
     res.json(updatedUser)
 })
 
-
-
 module.exports = router;

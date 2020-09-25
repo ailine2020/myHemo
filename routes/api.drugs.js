@@ -12,22 +12,33 @@ router.get("/", async (req, res, next) => {
 
 router.get("/:id", async (req, res, next) => {
     try {
-      const drug = await DrugModel.findById(req.params.id);
+      const drug = await DrugModel.findById(req.params.id).populate("author");
       res.json(drug);
+    } catch (err) {
+      next(err);
+    }
+  });
+  router.get("/user/:id", async (req, res, next) => {
+    try {
+      const drug = await DrugModel.find({author: req.params.id}).populate("author");
+      res.json(drug);
+      console.log("----------",drug.author);
     } catch (err) {
       next(err);
     }
   });
   router.post("/", async (req, res, next) => {
     const {
+        author,
         name,
         date,
         quantite,
     } = req.body;
     try {
         const drug = await DrugModel.create({
+            author,
             name,
-            date,
+            date : Date.now(),
             quantite,
         });
         res.json(drug)

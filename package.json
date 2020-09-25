@@ -27,6 +27,7 @@
     "morgan": "^1.10.0",
     "multer": "^1.4.2",
     "multer-storage-cloudinary": "^4.0.0",
+    "node-cron": "^2.0.3",
     "nodemailer": "^6.4.11",
     "vue-axios": "^2.1.5"
   }
