@@ -1,5 +1,7 @@
 const router = new require("express").Router();
+const UserModel = require("../models/User");
 const RappelModel = require("./../models/Rappel");
+const cronJobs = require("../cron/user-rappel");
 
 router.get("/", async (req, res, next) => {
     try {
@@ -11,7 +13,7 @@ router.get("/", async (req, res, next) => {
 });
 router.get("/:id", async (req, res, next) => {
     try {
-      const rappel = await RappelModel.findById(req.params.id).populate("author");
+      const rappel = await (await RappelModel.findById(req.params.id).populate("author").populate("quantite"));
       res.json(rappel);
     } catch (err) {
       next(err);
@@ -31,23 +33,23 @@ router.get("/user/:id", async (req, res, next) => {
 router.post("/", async (req, res, next) => {
     const {
         author,
-        calendar,
+        date_created,
         periodicity,
-        injection_,
         drugs,
-        date_rappel,
+        date_last_rappel,
         title,
     } = req.body;
     try {
         const rappel = await RappelModel.create({
             author,
-            calendar: Date.now(),
+            date_created,
             periodicity,
-            injection_,
             drugs,
-            date_rappel,
+            date_last_rappel,
             title,
         });
+       
+        cronJobs.userRappel(rappel);
         res.json(rappel)
     } catch (err) {
         next(err)

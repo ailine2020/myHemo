@@ -1,7 +1,7 @@
 const express = require("express");
 const router = new express.Router();
 const UserModel = require("./../models/User");
-const uploader = require("./../config/cloudinary")
+const uploader = require("./../config/cloudinary");
 
 router.patch("/user/:id", uploader.array("card"), async (req, res, next) => {
     const updatedUser = await UserModel.findByIdAndUpdate(req.params.id, {

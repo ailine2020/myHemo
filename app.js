@@ -8,15 +8,8 @@ const MongoStore = require("connect-mongo")(session);
 const cors = require("cors");
 const morgan = require("morgan"); // morgan est un logger
 const app = express();
-const cron = require('node-cron');
-const nodemailer = require('nodemailer');
-const mail_host = "smtp.mailtrap.io";
-const mail_host_port = 2525;
-const mail_user_address = "e64ddf3250-580071@inbox.mailtrap.io";
-const mail_user_name = "3c64b94a1d9d3f";
-const mail_user_pass = "b2062797f9556d";
-
-
+// const cron = require('node-cron');
+// const cronJobs = require("./cron/user-rappel");
 
 
 // POST SETUP
@@ -30,35 +23,7 @@ app.use(morgan("dev"));
 
 //CRON SETUP
 
-// create reusable transporter object using the default SMTP transport
-let transporter = nodemailer.createTransport({
-  host: mail_host,
-  port: mail_host_port,
-  secure: false, // true for 465, false for other ports
-  auth: {
-    user: mail_user_name, // generated ethereal user
-    pass: mail_user_pass, // generated ethereal password
-  },
-});
-cron.schedule('0 0 * * 1 2 3 4 5 6 7', function () {
-  console.log('---------------------');
-  console.log('Running Cron Job');
-
-  let messageOptions = {
-    from: mail_user_address,
-    to: 'ailine.soto@outlook.fr',
-    subject: 'Rappel Email',
-    text: 'Hi there. This email was automatically sent by us.'
-  };
-
-  transporter.sendMail(messageOptions, function (error, info) {
-    if (error) {
-      throw error;
-    } else {
-      console.log('Email successfully sent!', info);
-    }
-  });
-});
+// app.use(cronJobs.userRappel);
 
 // SESSION SETUP
 app.use(

@@ -1,4 +1,5 @@
 const router = new require("express").Router();
+const RappelModel = require("../models/Rappel");
 const DrugModel = require("./../models/Drug");
 
 router.get("/", async (req, res, next) => {
@@ -12,22 +13,24 @@ router.get("/", async (req, res, next) => {
 
 router.get("/:id", async (req, res, next) => {
     try {
-      const drug = await DrugModel.findById(req.params.id).populate("author");
-      res.json(drug);
+        const drug = await (await DrugModel.findById(req.params.id).populate("author"));
+        res.json(drug);
     } catch (err) {
-      next(err);
+        next(err);
     }
-  });
-  router.get("/user/:id", async (req, res, next) => {
+});
+router.get("/user/:id", async (req, res, next) => {
     try {
-      const drug = await DrugModel.find({author: req.params.id}).populate("author");
-      res.json(drug);
-      console.log("----------",drug.author);
+        const drug = await DrugModel.find({
+            author: req.params.id
+        }).populate("author");
+        res.json(drug);
+        console.log("----------++++++++123", drug);
     } catch (err) {
-      next(err);
+        next(err);
     }
-  });
-  router.post("/", async (req, res, next) => {
+});
+router.post("/", async (req, res, next) => {
     const {
         author,
         name,
@@ -38,7 +41,7 @@ router.get("/:id", async (req, res, next) => {
         const drug = await DrugModel.create({
             author,
             name,
-            date : Date.now(),
+            date: Date.now(),
             quantite,
         });
         res.json(drug)
@@ -68,5 +71,29 @@ router.patch("/:id", async (req, res, next) => {
         next(err)
     }
 });
+
+router.patch("/:id/decrement-stock", async (req, res, next) => {
+    // find rappel
+    // ensuite find toutes les drugs du rappel
+    // et enfin update avec la formule ci dessus, CHAQUE drug.quantite
+    // const rappel = RappelModel.find({
+    //     drug: req.params.id
+    // })
+    // drugs.forEach(drug => {
+    try {
+        const decreamentdDrug = await DrugModel.findByIdAndUpdate(req.params.id, {
+            $inc: {
+                quantite: -1
+            }
+        }, {
+            new: true
+        }); //pour récuperer le doc mis à jour
+        res.json(decreamentdDrug);
+    } catch (err) {
+        next(err)
+    }
+ });
+
+// });
 
 module.exports = router;

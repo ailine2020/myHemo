@@ -13,6 +13,7 @@ router.get("/signout", (req, res) => {
 // récup user par le token
 router.get("/get-user-by-token", (req, res) => {
     try {
+        console.log("here");
         const user = auth.decodeToken(req.header("x-authenticate")); // x = notre custom -- authenticate = car utilisé pour l'authentification
         const userId = user.infos._id;
         console.log("surement l'user", user);

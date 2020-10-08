@@ -11,8 +11,9 @@ const userSchema = new Schema({
         required: true,
     },
     password: {
-        type: String,
+        min: 6,
         required: true,
+        type: String,
     },
     avatar: {
         type: String,
@@ -24,8 +25,14 @@ const userSchema = new Schema({
         default: "user",
     },
     card: {
-        recto: String,
-        verso: String
+        recto: {
+            type: String,
+            default: "https://illico-travel.ch/wp-content/themes/illico/img/unknown.png"
+        },
+        verso: {
+            type: String,
+            default: "https://illico-travel.ch/wp-content/themes/illico/img/unknown.png"
+        },
     }
 });
 

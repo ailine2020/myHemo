@@ -17,6 +17,7 @@ var authenticate = function authenticate(req, res, next) {
     req.isAuthenticated = token;
     next(); // si pas d'erreur,le prochain middleware est appellé...
   } catch (err) {
+    console.log(err);
     res.status(401).send(err);
   }
 };
