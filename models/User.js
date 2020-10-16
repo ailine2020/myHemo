@@ -21,7 +21,7 @@ const userSchema = new Schema({
     },
     role: {
         type: String,
-        enum: ["admin", "user"],
+        enum: ["user", "admin"],
         default: "user",
     },
     card: {

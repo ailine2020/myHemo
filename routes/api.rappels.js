@@ -13,42 +13,41 @@ router.get("/", async (req, res, next) => {
 });
 router.get("/:id", async (req, res, next) => {
     try {
-      const rappel = await (await RappelModel.findById(req.params.id).populate("author").populate("quantite"));
-      res.json(rappel);
+        const rappel = await (await RappelModel.findById(req.params.id).populate("author").populate("quantite"));
+        res.json(rappel);
     } catch (err) {
-      next(err);
+        next(err);
     }
-  });
+});
 router.get("/user/:id", async (req, res, next) => {
     try {
-      const rappel = await RappelModel.find({author: req.params.id}).populate("author");
-      res.json(rappel);
+        const rappel = await RappelModel.find({
+            author: req.params.id
+        }).populate("author");
+        res.json(rappel);
     } catch (err) {
-      next(err);
+        next(err);
     }
-  });
+});
 
 //POST : create rappel
 
-router.post("/", async (req, res, next) => {
+router.post("/user/:id", async (req, res, next) => {
     const {
-        author,
         date_created,
         periodicity,
-        drugs,
         date_last_rappel,
         title,
     } = req.body;
     try {
         const rappel = await RappelModel.create({
-            author,
+            author: req.params.id,
             date_created,
             periodicity,
-            drugs,
             date_last_rappel,
             title,
         });
-       
+
         cronJobs.userRappel(rappel);
         res.json(rappel)
     } catch (err) {

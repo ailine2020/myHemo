@@ -30,18 +30,17 @@ router.get("/user/:id", async (req, res, next) => {
         next(err);
     }
 });
-router.post("/", async (req, res, next) => {
+router.post("/user/:id", async (req, res, next) => {
     const {
-        author,
         name,
         date,
         quantite,
     } = req.body;
     try {
         const drug = await DrugModel.create({
-            author,
+            author : req.params.id,
             name,
-            date: Date.now(),
+            date,
             quantite,
         });
         res.json(drug)
@@ -81,7 +80,9 @@ router.patch("/:id/decrement-stock", async (req, res, next) => {
     // })
     // drugs.forEach(drug => {
     try {
-        const decreamentdDrug = await DrugModel.findByIdAndUpdate(req.params.id, {
+        const decreamentdDrug = await DrugModel.findByIdAndUpdate({
+            drug: req.params.id
+        }, req.body, {
             $inc: {
                 quantite: -1
             }
@@ -92,7 +93,7 @@ router.patch("/:id/decrement-stock", async (req, res, next) => {
     } catch (err) {
         next(err)
     }
- });
+});
 
 // });
 
