@@ -57,7 +57,7 @@ router.post("/user/:id", async (req, res, next) => {
 //DELETE RAPL
 router.delete("/:id", async (req, res, next) => {
     try {
-        const deleteRappel = await RappelModel.findOneAndDelete(req.params.id);
+        const deleteRappel = await RappelModel.findByIdAndDelete(req.params.id);
         res.json(deleteRappel)
     } catch (err) {
         next(err);

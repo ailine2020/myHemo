@@ -16,10 +16,6 @@ const rappelSchema = new Schema({
     enum: ["everyday", "every 2 days", "every 3 days", "every 4 days", "every 5 days", "every 6 days", "every 7 days", "every 14 days"]
   },
   // injection_ok: Boolean,
-  drug: {
-    type: Schema.Types.ObjectId,
-    ref: "Drug"
-  },
   title: String,
 });
 
